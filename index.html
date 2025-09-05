@@ -1,0 +1,165 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Δν Datablock Archives — GitHub Pages</title>
+  <meta name="description" content="Δν Datablock Archives: ID generator & visualizer — static page ready for GitHub Pages." />
+  <style>
+    :root{
+      --bg:#07111a; --panel:#071922; --muted:#9fb0bf; --glassline:#7ef3c9;
+      --iv:#f6b94a; --cs:#66a9ff; --bs:#8b5cf6; --vl:#fb6b6b; --nf:#0b1013;
+      --accent:#28d1d3; --glassgrad:linear-gradient(90deg,#7ef3c9,#5ee0d6);
+      font-family:Inter, ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, Arial;
+    }
+    *{box-sizing:border-box}
+    body{margin:0;background:linear-gradient(180deg,#04101a 0%, #06131a 100%);color:#d7eef7;min-height:100vh}
+    .wrap{max-width:1100px;margin:28px auto;padding:20px}
+    header{display:flex;justify-content:space-between;gap:12px;align-items:center}
+    h1{margin:0;font-size:20px}
+    p.lead{margin:6px 0 18px;color:var(--muted)}
+    .grid{display:grid;grid-template-columns:320px 1fr;gap:18px}
+    .card{background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));border:1px solid rgba(255,255,255,0.03);padding:14px;border-radius:12px}
+    .legend{display:flex;flex-direction:column;gap:8px}
+    .tag{display:flex;align-items:center;gap:10px;padding:8px;border-radius:10px}
+    .chip{width:14px;height:14px;border-radius:4px}
+    .tools{display:flex;flex-direction:column;gap:12px}
+    label{font-size:13px;color:var(--muted);display:block;margin-bottom:6px}
+    input,select,textarea,button{width:100%;padding:10px;border-radius:8px;border:1px solid rgba(255,255,255,0.03);background:transparent;color:inherit}
+    .row{display:flex;gap:8px}
+    .row > *{flex:1}
+    .btn{border:none;padding:10px;border-radius:8px;cursor:pointer}
+    .btn.primary{background:var(--glassgrad);color:#021018}
+    .btn.ghost{background:transparent;border:1px solid rgba(255,255,255,0.04)}
+    .canvas{min-height:520px;padding:12px;display:flex;flex-direction:column;gap:12px}
+    .nodes{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:12px}
+    .node{padding:12px;border-radius:10px;background:linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.02));border:1px solid rgba(255,255,255,0.03);cursor:pointer}
+    .node h3{margin:0 0 6px;font-size:14px}
+    .node .meta{font-size:12px;color:var(--muted)}
+    .details{margin-top:8px;padding:12px;border-radius:10px;background:#02121a;border:1px dashed rgba(255,255,255,0.02)}
+    pre{white-space:pre-wrap;font-size:13px;color:#cfeff4;background:transparent;margin:0}
+    footer{margin-top:18px;color:var(--muted);font-size:13px;text-align:center}
+    @media (max-width:880px){.grid{grid-template-columns:1fr}.wrap{padding:12px}}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <div>
+        <h1>Δν Datablock Archives</h1>
+        <p class="lead">Static HTML preview: generate IDs, store demo datablocks in your browser (localStorage), and export/import JSON. Ready to drop into a repo as <code>index.html</code>.</p>
+      </div>
+      <div style="text-align:right">
+        <small style="color:var(--muted)">Δν DBS • Classification: GL • IV • CS • BS • VL • NF</small>
+      </div>
+    </header>
+
+    <div class="grid" style="margin-top:16px">
+      <div class="card">
+        <strong>Classification Legend</strong>
+        <div class="legend" style="margin-top:10px">
+          <div class="tag"><span class="chip" style="background:var(--glassline)"></span><div><strong>GL</strong> — Glassline (Transparent)</div></div>
+          <div class="tag"><span class="chip" style="background:var(--iv)"></span><div><strong>IV</strong> — Ironveil (Mildly sensitive)</div></div>
+          <div class="tag"><span class="chip" style="background:var(--cs)"></span><div><strong>CS</strong> — Cobalt Shroud (Tactical)</div></div>
+          <div class="tag"><span class="chip" style="background:var(--bs)"></span><div><strong>BS</strong> — Blackspire (High-level)</div></div>
+          <div class="tag"><span class="chip" style="background:var(--vl)"></span><div><strong>VL</strong> — Voidlock (Ultra)</div></div>
+          <div class="tag"><span class="chip" style="background:var(--nf)"></span><div><strong>NF</strong> — Nightfall (Denied existence)</div></div>
+        </div>
+
+        <div style="margin-top:12px">
+          <strong>Datablock Generator</strong>
+          <div style="margin-top:8px" class="tools">
+            <label>File Type</label>
+            <select id="ft"><option>LOG</option><option>SCHM</option><option>SPEC</option><option>EXP</option><option>DOC</option></select>
+            <label>Project Code</label>
+            <input id="pc" value="PRJ-PREPS" />
+            <div class="row" style="margin-top:6px">
+              <select id="cc"><option value="GL">GL</option><option value="IV">IV</option><option value="CS">CS</option><option value="BS">BS</option><option value="VL">VL</option><option value="NF">NF</option></select>
+              <input id="loc" value="434" />
+            </div>
+            <label style="margin-top:6px">Index</label>
+            <input id="idx" value="001" />
+            <div style="display:flex;gap:8px;margin-top:8px">
+              <button class="btn primary" id="gen">Generate & Copy</button>
+              <button class="btn ghost" id="add">Save as Sample</button>
+            </div>
+            <input id="out" readonly style="margin-top:8px" />
+            <small style="color:var(--muted);display:block;margin-top:6px">Format: Δν/[FILETYPE]-[PROJECTCODE]/[CLASSIFICATION]-[LOCATIONID]-[INDEX]</small>
+
+            <div style="margin-top:10px;display:flex;gap:8px">
+              <button class="btn ghost" id="export">Export JSON</button>
+              <button class="btn ghost" id="import">Import JSON</button>
+              <button class="btn ghost" id="clear">Clear All</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card canvas">
+        <div style="display:flex;justify-content:space-between;align-items:center">
+          <strong>Datablock Canvas</strong>
+          <div style="display:flex;gap:8px">
+            <button class="btn ghost" id="refresh">Refresh</button>
+          </div>
+        </div>
+
+        <div id="nodes" class="nodes" style="margin-top:12px"></div>
+        <div class="details" id="detail">Select a node to view details</div>
+      </div>
+    </div>
+
+    <footer>To publish: copy this file to a GitHub repo and enable GitHub Pages. Fully client-side; runs from <code>index.html</code>.</footer>
+  </div>
+
+  <script>
+  const storageKey='dnv_datablocks_v1';
+  function now(){return(new Date()).toISOString()}
+  function loadBlocks(){try{return JSON.parse(localStorage.getItem(storageKey)||'[]')}catch(e){return[];}}
+  function saveBlocks(arr){localStorage.setItem(storageKey,JSON.stringify(arr))}
+  if(!localStorage.getItem(storageKey)){
+      const samples=[
+          {id:'Δν/LOG-PRJ-PREPS/GL-434-001',title:'PREPS-II Routine Log',cls:'GL',loc:434,idx:'001',ts:'2025-08-26T03:42:17Z',summary:'Routine propulsion test; no anomalies.'},
+          {id:'Δν/SCHM-PRJ-F09/CS-219-007',title:'FMIC MkI Schematic',cls:'CS',loc:219,idx:'007',ts:'2025-07-11T11:02:03Z',summary:'Tactical schematic for induction coupler.'},
+          {id:'Δν/DOC-PRJ-PREPS/VL-562-014',title:'PREPS-III Prototype Plan',cls:'VL',loc:562,idx:'014',ts:'2025-09-01T00:00:00Z',summary:'Prototype design; PSC-5 restricted.'}
+      ];saveBlocks(samples);
+  }
+  function render(){
+      const nodes=document.getElementById('nodes'); nodes.innerHTML=''; const arr=loadBlocks();
+      if(!arr.length){nodes.innerHTML='<div style="color:var(--muted)">No datablocks saved.</div>';return;}
+      arr.forEach(b=>{
+          const n=document.createElement('div');n.className='node';
+          n.innerHTML=`<h3>${b.title}</h3><div class='meta'>${b.id}</div><div style='margin-top:8px;color:var(--muted)'>${b.summary||''}</div>`;
+          n.onclick=()=>showDetail(b);nodes.appendChild(n);
+      })
+  }
+  function showDetail(b){
+      const d=document.getElementById('detail');
+      d.innerHTML=`<pre>Datablock ID: ${b.id}
+Title: ${b.title}
+Classification: ${b.cls}
+Location: ${b.loc}
+Index: ${b.idx}
+Timestamp: ${b.ts}
+
+Summary:
+${b.summary||'(none)'}
+
+--- Actions ---
+• Copy ID • Simulate Access Check • Export</pre>`;
+      const wrapper=document.createElement('div');wrapper.style.display='flex';wrapper.style.gap='8px';wrapper.style.marginTop='8px';
+      const c=document.createElement('button');c.className='btn primary';c.textContent='Copy ID';c.onclick=()=>navigator.clipboard.writeText(b.id).then(()=>alert('Copied'));
+      const a=document.createElement('button');a.className='btn ghost';a.textContent='Access Check';a.onclick=()=>alert('Simulated access check: clearance required for '+b.cls);
+      const e=document.createElement('button');e.className='btn ghost';e.textContent='Export JSON';e.onclick=()=>downloadJSON(b);
+      wrapper.appendChild(c);wrapper.appendChild(a);wrapper.appendChild(e);d.appendChild(wrapper);
+  }
+  function downloadJSON(obj){const blob=new Blob([JSON.stringify(obj,null,2)],{type:'application/json'});const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download=(obj.id||'datablock')+'.json';document.body.appendChild(a);a.click();a.remove();URL.revokeObjectURL(url);}
+  document.getElementById('gen').addEventListener('click',()=>{const ft=document.getElementById('ft').value.trim();const pc=document.getElementById('pc').value.trim();const cc=document.getElementById('cc').value.trim();const loc=document.getElementById('loc').value.trim();const idx=document.getElementById('idx').value.trim();const id=`Δν/${ft}-${pc}/${cc}-${loc}-${idx}`;document.getElementById('out').value=id;navigator.clipboard?.writeText(id).then(()=>{alert('ID copied to clipboard')}).catch(()=>{});});
+  document.getElementById('add').addEventListener('click',()=>{const id=document.getElementById('out').value || (document.getElementById('ft').value && `Δν/${document.getElementById('ft').value}-${document.getElementById('pc').value}/${document.getElementById('cc').value}-${document.getElementById('loc').value}-${document.getElementById('idx').value}`);if(!id){alert('Generate an ID first');return}const title=prompt('Title for datablock','New Datablock');if(!title)return;const summary=prompt('Short summary','User-saved datablock');const arr=loadBlocks();arr.push({id,title,cls:document.getElementById('cc').value,loc:document.getElementById('loc').value,idx:document.getElementById('idx').value,ts:now(),summary});saveBlocks(arr);render();});
+  document.getElementById('export').addEventListener('click',()=>{const arr=loadBlocks();const blob=new Blob([JSON.stringify(arr,null,2)],{type:'application/json'});const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download='dnv_datablocks_export.json';document.body.appendChild(a);a.click();a.remove();URL.revokeObjectURL(url);});
+  document.getElementById('import').addEventListener('click',()=>{const file=document.createElement('input');file.type='file';file.accept='application/json';file.onchange=e=>{const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=ev=>{try{const data=JSON.parse(ev.target.result);if(Array.isArray(data)){saveBlocks(data);render();alert('Imported '+data.length+' datablocks')}else alert('JSON must be an array of datablocks');}catch(err){alert('Invalid JSON')}};r.readAsText(f);};file.click();});
+  document.getElementById('clear').addEventListener('click',()=>{if(confirm('Clear all saved datablocks from browser storage?')){localStorage.removeItem(storageKey);render();alert('Cleared')}});
+  document.getElementById('refresh').addEventListener('click',render);
+  render();
+  </script>
+</body>
+</html>
